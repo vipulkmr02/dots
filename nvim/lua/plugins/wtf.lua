@@ -1,0 +1,33 @@
+return {
+    "piersolenski/wtf.nvim",
+    dependencies = {
+        "MunifTanjim/nui.nvim",
+    },
+      opts = {},
+    keys = {
+        {
+            mode = { "n" },
+            "<leader>es",
+            function()
+                require("wtf").search()
+            end,
+            desc = "Search diagnostic with Google",
+        },
+        {
+            mode = { "n" },
+            "<leader>eh",
+            function()
+                require("wtf").history()
+            end,
+            desc = "Populate the quickfix list with previous chat history",
+        },
+        {
+            mode = { "n" },
+            "<leader>eg",
+            function()
+                require("wtf").grep_history()
+            end,
+            desc = "Grep previous chat history with Telescope",
+        },
+    },
+}
