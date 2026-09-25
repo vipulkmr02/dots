@@ -12,8 +12,6 @@ return {
     local dap = require('dap')
     local dapui = require('dapui')
 
-    dap.defaults.fallback.force_external_terminal = true
-
     vim.fn.sign_define('DapBreakpoint', {
       text = ' ',
       texthl = '',
@@ -54,6 +52,13 @@ return {
           size = 0.25,
           position = "bottom",
         },
+        {
+          elements = {
+            { id = "console", size = 1.0 },
+          },
+          size = 0.25,
+          position = "bottom",
+        },
       },
       floating = {
         max_height = nil,
@@ -81,6 +86,10 @@ return {
     vim.keymap.set('n', '<Leader>de', function()
       dapui.toggle({ layout = 3 })
     end, { desc = "[DBG] Toggle Expression REPL" })
+
+    vim.keymap.set('n', '<Leader>do', function()
+      dapui.toggle({ layout = 4 })
+    end, { desc = "[DBG] Toggle Output Console" })
 
     require('mason-nvim-dap').setup({
       ensure_installed = { 'debugpy', 'js-debug' },
