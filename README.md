@@ -1,5 +1,6 @@
 ## What's New
 
+- Added `hardtime.nvim` in gentle training mode: motion hints are enabled, repeated movement is tolerated up to 5 presses, mouse stays enabled, and restricted motions are hinted instead of blocked.
 - Neovim DAP now has independently toggleable Watches, Call Stack, Expression REPL, and Output Console panels.
 - Debug output is no longer forced into an external terminal. Project-level `.vscode/launch.json` can choose `integratedTerminal`, `internalConsole`, or `externalTerminal`.
 
