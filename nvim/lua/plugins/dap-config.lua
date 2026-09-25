@@ -8,17 +8,21 @@ return {
   },
   init = function()
     require('dap-python').setup("/usr/bin/python3")
+
     local dap = require('dap')
+    local dapui = require('dapui')
+
     dap.defaults.fallback.force_external_terminal = true
-    vim.fn.sign_define('DapBreakpoint',
-      {
-        text = ' ',
-        texthl = '',
-        linehl = 'CursorLine',
-        numhl = 'CursorLine'
-      }
-    )
-    require('dapui').setup({
+
+    vim.fn.sign_define('DapBreakpoint', {
+      text = ' ',
+      texthl = '',
+      linehl = 'CursorLine',
+      numhl = 'CursorLine'
+    })
+
+    -- Keep the debugger UI minimal: watches, call stack, and expression REPL.
+    dapui.setup({
       icons = { expanded = " ", collapsed = " " },
       mappings = {
         open = "o",
@@ -31,17 +35,23 @@ return {
       layouts = {
         {
           elements = {
-            "scopes",
+            { id = "watches", size = 1.0 },
           },
-          size = 0.3,
-          position = "right"
+          size = 0.25,
+          position = "left",
         },
         {
           elements = {
-            "repl",
-            "breakpoints"
+            { id = "stacks", size = 1.0 },
           },
-          size = 0.3,
+          size = 0.25,
+          position = "right",
+        },
+        {
+          elements = {
+            { id = "repl", size = 1.0 },
+          },
+          size = 0.25,
           position = "bottom",
         },
       },
@@ -58,11 +68,27 @@ return {
         max_type_length = nil,
       },
     })
+
+    -- Independent panel toggles.
+    vim.keymap.set('n', '<Leader>dw', function()
+      dapui.toggle({ layout = 1 })
+    end, { desc = "[DBG] Toggle Watches" })
+
+    vim.keymap.set('n', '<Leader>ds', function()
+      dapui.toggle({ layout = 2 })
+    end, { desc = "[DBG] Toggle Call Stack" })
+
+    vim.keymap.set('n', '<Leader>de', function()
+      dapui.toggle({ layout = 3 })
+    end, { desc = "[DBG] Toggle Expression REPL" })
+
     require('mason-nvim-dap').setup({
       ensure_installed = { 'debugpy', 'js-debug' },
-      handlers = { function(config)
-        require('mason-nvim-dap').default_setup(config)
-      end }
+      handlers = {
+        function(config)
+          require('mason-nvim-dap').default_setup(config)
+        end
+      }
     })
   end
 }
